@@ -1,11 +1,561 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Mi primera web</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Leonardo — Digital Space</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #05060a;
+    color: #f5f7ff;
+    overflow-x: hidden;
+}
+
+/* Fondo */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -3;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(0,140,255,.18), transparent 30%),
+        radial-gradient(circle at 85% 70%, rgba(130,70,255,.16), transparent 30%),
+        radial-gradient(circle at 50% 100%, rgba(0,220,180,.10), transparent 30%);
+}
+
+.grid {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    opacity: .18;
+    background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size: 55px 55px;
+    mask-image: linear-gradient(to bottom, black, transparent);
+}
+
+/* Partículas */
+
+.particles {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: .5;
+    animation: float 8s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); opacity:.2; }
+    50% { transform: translateY(-30px); opacity:.8; }
+}
+
+/* Navegación */
+
+nav {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(900px, 92%);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(10,12,20,.65);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
+    z-index: 100;
+    box-shadow: 0 10px 40px rgba(0,0,0,.35);
+}
+
+.logo {
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    opacity: .45;
+}
+
+nav a {
+    color: #aaa;
+    text-decoration: none;
+    font-size: 13px;
+    margin-left: 22px;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: white;
+}
+
+/* Hero */
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 20px 60px;
+}
+
+.hero-content {
+    max-width: 900px;
+}
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.03);
+    border-radius: 100px;
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 30px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #55ffb0;
+    box-shadow: 0 0 12px #55ffb0;
+}
+
+h1 {
+    font-size: clamp(55px, 11vw, 120px);
+    line-height: .9;
+    letter-spacing: -7px;
+    margin-bottom: 30px;
+    background: linear-gradient(
+        120deg,
+        #ffffff,
+        #aeb8ff,
+        #ffffff
+    );
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: title 6s ease-in-out infinite;
+}
+
+@keyframes title {
+    0%,100% { filter: brightness(1); }
+    50% { filter: brightness(1.35); }
+}
+
+.subtitle {
+    max-width: 650px;
+    margin: auto;
+    color: #8f94a5;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+.buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 14px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.05);
+    transition: .3s;
+}
+
+.btn.primary {
+    background: white;
+    color: black;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,.3);
+}
+
+/* Secciones */
+
+section {
+    padding: 120px 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.section-label {
+    color: #6d75ff;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: clamp(35px, 6vw, 65px);
+    letter-spacing: -3px;
+    margin-bottom: 50px;
+}
+
+/* Cards */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    position: relative;
+    padding: 30px;
+    min-height: 250px;
+    background: linear-gradient(
+        145deg,
+        rgba(255,255,255,.07),
+        rgba(255,255,255,.015)
+    );
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: .4s;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: -80px;
+    right: -80px;
+    background: rgba(100,120,255,.18);
+    filter: blur(60px);
+    border-radius: 50%;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255,255,255,.18);
+}
+
+.card-number {
+    font-size: 12px;
+    color: #666b7b;
+    margin-bottom: 60px;
+}
+
+.card h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #818697;
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+/* Terminal */
+
+.terminal {
+    border: 1px solid rgba(255,255,255,.09);
+    background: #080a0f;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,.4);
+}
+
+.terminal-top {
+    padding: 13px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    color: #666;
+    font-size: 12px;
+}
+
+.terminal-body {
+    padding: 28px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 2;
+    color: #b8bfd1;
+}
+
+.green {
+    color: #65ffad;
+}
+
+.blue {
+    color: #7f9cff;
+}
+
+/* Footer */
+
+footer {
+    text-align: center;
+    padding: 80px 20px;
+    color: #555b6b;
+    font-size: 13px;
+}
+
+footer strong {
+    color: #aaa;
+}
+
+/* Responsive */
+
+@media(max-width:600px) {
+
+    nav {
+        padding: 12px;
+    }
+
+    nav div:last-child {
+        display: none;
+    }
+
+    h1 {
+        letter-spacing: -4px;
+    }
+
+    section {
+        padding: 80px 20px;
+    }
+}
+</style>
 </head>
+
 <body>
-    <h1>Hola desde mi POCO</h1>
-    <p>Esta página está publicada en Internet.</p>
-</body>		
+
+<div class="grid"></div>
+
+<div class="particles">
+    <div class="particle" style="left:8%;top:20%;animation-delay:0s"></div>
+    <div class="particle" style="left:20%;top:70%;animation-delay:2s"></div>
+    <div class="particle" style="left:35%;top:35%;animation-delay:4s"></div>
+    <div class="particle" style="left:52%;top:80%;animation-delay:1s"></div>
+    <div class="particle" style="left:70%;top:25%;animation-delay:3s"></div>
+    <div class="particle" style="left:85%;top:65%;animation-delay:5s"></div>
+    <div class="particle" style="left:92%;top:15%;animation-delay:2s"></div>
+</div>
+
+<nav>
+    <div class="logo">LEONARDO<span>/WEB</span></div>
+
+    <div>
+        <a href="#about">Sobre mí</a>
+        <a href="#projects">Proyectos</a>
+        <a href="#system">Sistema</a>
+    </div>
+</nav>
+
+<main>
+
+<section class="hero">
+
+<div class="hero-content">
+
+<div class="status">
+    <span class="status-dot"></span>
+    SISTEMA ONLINE
+</div>
+
+<h1>LEONARDO</h1>
+
+<p class="subtitle">
+Un espacio digital construido desde cero.
+Tecnología, creatividad y curiosidad reunidas
+en una experiencia experimental para la web.
+</p>
+
+<div class="buttons">
+    <a class="btn primary" href="#projects">Explorar</a>
+    <a class="btn" href="#system">Ver sistema</a>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="about">
+
+<div class="section-label">01 / IDENTIDAD</div>
+
+<h2>Construido,<br>no ensamblado.</h2>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-number">01</div>
+<h3>Curiosidad</h3>
+<p>
+Explorar cómo funcionan las cosas y convertir
+esa curiosidad en proyectos reales.
+</p>
+</div>
+
+<div class="card">
+<div class="card-number">02</div>
+<h3>Tecnología</h3>
+<p>
+Linux, desarrollo web, redes y seguridad
+como herramientas para crear.
+</p>
+</div>
+
+<div class="card">
+<div class="card-number">03</div>
+<h3>Experimentación</h3>
+<p>
+Probar ideas, romperlas, entenderlas
+y volver a construirlas mejor.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="projects">
+
+<div class="section-label">02 / PROYECTOS</div>
+
+<h2>Laboratorio<br>digital.</h2>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-number">PROJECT 001</div>
+<h3>Mi primera Web</h3>
+<p>
+Una página creada completamente desde un
+teléfono Android utilizando Termux, Git y GitHub.
+</p>
+</div>
+
+<div class="card">
+<div class="card-number">PROJECT 002</div>
+<h3>Cyber Lab</h3>
+<p>
+Un espacio experimental dedicado al aprendizaje
+de redes, sistemas y ciberseguridad.
+</p>
+</div>
+
+<div class="card">
+<div class="card-number">PROJECT 003</div>
+<h3>Future Systems</h3>
+<p>
+Ideas, experimentos y conceptos tecnológicos
+convertidos en pequeñas experiencias digitales.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="system">
+
+<div class="section-label">03 / SYSTEM</div>
+
+<h2>Detrás de<br>la pantalla.</h2>
+
+<div class="terminal">
+
+<div class="terminal-top">
+● ● ● &nbsp; leonardo@poco ~
+</div>
+
+<div class="terminal-body">
+
+<span class="green">leonardo@poco</span>:~$ system_status<br><br>
+
+<span class="blue">OS</span> ........ Android / Termux<br>
+<span class="blue">WEB</span> ...... HTML / CSS / JavaScript<br>
+<span class="blue">HOST</span> ..... GitHub Pages<br>
+<span class="blue">STATUS</span> ... <span class="green">ONLINE</span><br>
+<span class="blue">MODE</span> ..... EXPERIMENTAL<br><br>
+
+<span class="green">System initialized successfully.</span>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+Construido desde cero por <strong>Leonardo</strong> · 2026
+</footer>
+
+
+<script>
+
+/* Efecto de inclinación suave en las tarjetas */
+
+document.querySelectorAll('.card').forEach(card => {
+
+    card.addEventListener('mousemove', e => {
+
+        const rect = card.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const rotateX = (y / rect.height - .5) * -5;
+        const rotateY = (x / rect.width - .5) * 5;
+
+        card.style.transform =
+            `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+    });
+
+});
+
+</script>
+
+</body>
 </html>
